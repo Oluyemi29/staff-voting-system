@@ -17,10 +17,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const formSchema = z.object({
-    matric: z
+    staffid: z
       .string()
-      .min(6, { message: "Minimum of six character" })
-      .max(24, { message: "Maximum of twenty-Four character" }),
+      .min(1, { message: "Minimum of 1 character" })
+      .max(100, { message: "Maximum of 100 character" }),
     password: z
       .string()
       .min(4, { message: "Minimum of four character" })
@@ -39,9 +39,9 @@ const Login = () => {
   const submit = async (value: formSchemaType) => {
     setLoading(true);
     try {
-      const { matric, password } = value;
+      const { staffid, password } = value;
       const request = await signIn("credentials", {
-        matric,
+        staffid,
         password,
         redirect: false,
       });
@@ -75,7 +75,7 @@ const Login = () => {
         />
         <h1 className="text-center font-semibold text-emerald-700">Login</h1>
         <p className="text-center text-[0.6rem] text-emerald-700">
-          Note 1: Login with ur matric number and password used when registered
+          Note 1: Login with ur Staff ID and password used when registering
         </p>
 
         <form
@@ -83,12 +83,12 @@ const Login = () => {
           className="flex flex-col gap-5 mt-5"
         >
           <Input
-            errorMessage={errors.matric?.message}
-            isInvalid={!!errors.matric}
-            {...register("matric")}
-            label={"Matric No"}
+            errorMessage={errors.staffid?.message}
+            isInvalid={!!errors.staffid}
+            {...register("staffid")}
+            label={"Staff ID"}
             type="text"
-            placeholder="Matric No"
+            placeholder="Staff ID"
           />
           <Input
             errorMessage={errors.password?.message}
@@ -98,8 +98,15 @@ const Login = () => {
             type={passwordVisible ? "text" : "password"}
             placeholder="Password"
             endContent={
-              <div className="cursor-pointer" onClick={() => setPasswordVisible(!passwordVisible)}>
-                {passwordVisible ? <HiMiniEyeSlash color="black" /> : <IoEyeSharp color="black" />}
+              <div
+                className="cursor-pointer"
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? (
+                  <HiMiniEyeSlash color="black" />
+                ) : (
+                  <IoEyeSharp color="black" />
+                )}
               </div>
             }
           />
@@ -123,7 +130,7 @@ const Login = () => {
         </form>
       </div>
       <h1 className="text-emerald-700 text-end text-[0.7rem] mt-2">
-        Dont have an account?{" "}
+        Dont have an account?
         <Link
           className="font-semibold underline underline-offset-2 italic"
           href={"/register"}

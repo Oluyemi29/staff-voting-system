@@ -23,7 +23,7 @@ const LandingPage = () => {
           to
         </p>
         <h1 className="text-center text-emerald-700 text-lg font-bold">
-          Voting Platform
+          Staff Voting Platform
         </h1>
         <Image
           src={"/ayede-logo2.png"}
@@ -33,7 +33,7 @@ const LandingPage = () => {
           className="mx-auto w-60 h-60"
         />
         <h1 className="text-emerald-700 text-2xl font-bold text-center">
-          Federa Polytechnic Ayede
+          Federal Polytechnic Ayede
         </h1>
         <Button
           as={Link}

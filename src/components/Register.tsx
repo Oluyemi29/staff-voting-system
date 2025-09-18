@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Select, SelectItem } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { z } from "zod";
@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterUser } from "@/app/api/Action";
 import { toast } from "react-hot-toast";
-import { AllDepartments, AllFaculties } from "@/category/Categories";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
@@ -17,8 +16,6 @@ const Register = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [department, setDepartment] = React.useState<string>("");
-  const [faculty, setFaculty] = React.useState<string>("");
   const [preview, setPreview] = useState<string>(
     "https://i.pinimg.com/736x/2b/2f/2b/2b2f2b2e25e3e79562840725bfb03df8.jpg"
   );
@@ -29,10 +26,10 @@ const Register = () => {
       .min(2, { message: "Minimum of two character" })
       .max(100, { message: "Maximum of hundred character" }),
     email: z.string().email({ message: "Invalid email address" }),
-    matric: z
+    staffid: z
       .string()
-      .min(6, { message: "Minimum of six character" })
-      .max(24, { message: "Maximum of twenty-Four character" }),
+      .min(1, { message: "Minimum of 1 character" })
+      .max(100, { message: "Maximum of 100 character" }),
     password: z
       .string()
       .min(4, { message: "Minimum of four character" })
@@ -72,19 +69,17 @@ const Register = () => {
   const submit = async (value: formSchemaType) => {
     setLoading(true);
     try {
-      const { email, matric, name, password } = value;
+      const { email, staffid, name, password } = value;
       const myImage = await GetImageLink();
-      if (!department || !faculty || !myImage) {
+      if (!myImage) {
         toast.error("All field are required");
         return;
       }
       const response = await RegisterUser({
         email,
-        matric,
+        staffid,
         name,
         password,
-        department,
-        faculty,
         image: myImage,
       });
       if (response.success === true) {
@@ -93,8 +88,6 @@ const Register = () => {
       } else {
         toast.error(response.message);
       }
-
-
       reset();
     } catch (error) {
       console.log(error);
@@ -120,8 +113,7 @@ const Register = () => {
           start
         </p>
         <p className="text-center text-[0.6rem] text-emerald-700">
-          Note 2: Your Matric Number and Name must be the same as it is in
-          Portal
+          Note 2: Your Staff ID must correct as it must be unique
         </p>
         <div className="h-80 overflow-y-scroll">
           <form
@@ -166,12 +158,12 @@ const Register = () => {
               placeholder="Email"
             />
             <Input
-              errorMessage={errors.matric?.message}
-              isInvalid={!!errors.matric}
-              {...register("matric")}
-              label={"Matric No"}
+              errorMessage={errors.staffid?.message}
+              isInvalid={!!errors.staffid}
+              {...register("staffid")}
+              label={"Staff ID"}
               type="text"
-              placeholder="Matric No"
+              placeholder="Staff ID"
             />
             <Input
               errorMessage={errors.password?.message}
@@ -184,48 +176,15 @@ const Register = () => {
                   className="cursor-pointer"
                   onClick={() => setPasswordVisible(!passwordVisible)}
                 >
-                  {passwordVisible ? <HiMiniEyeSlash color="black" /> : <IoEyeSharp color="black" />}
+                  {passwordVisible ? (
+                    <HiMiniEyeSlash color="black" />
+                  ) : (
+                    <IoEyeSharp color="black" />
+                  )}
                 </div>
               }
               placeholder="Password"
             />
-            <div className="bg-white">
-              <Select
-                className="w-full bg-white text-default-800"
-                label="Department"
-                placeholder="Select Your Department"
-                selectedKeys={[department]}
-                variant="bordered"
-                onChange={(e) => setDepartment(e.target.value)}
-              >
-                {AllDepartments.map((department) => (
-                  <SelectItem className="text-black" key={department.key}>
-                    {department.label}
-                  </SelectItem>
-                ))}
-              </Select>
-              <p className="text-default-500 text-small">
-                Department Selected: {department}
-              </p>
-            </div>
-
-            <div>
-              <Select
-                className="w-full bg-white text-default-800"
-                label="Faculty"
-                placeholder="Select Your Faculty"
-                selectedKeys={[faculty]}
-                variant="bordered"
-                onChange={(e) => setFaculty(e.target.value)}
-              >
-                {AllFaculties.map((faculty) => (
-                  <SelectItem className="text-black" key={faculty.key}>{faculty.label}</SelectItem>
-                ))}
-              </Select>
-              <p className="text-default-500 text-small">
-                Faculty Selected: {faculty}
-              </p>
-            </div>
             {loading ? (
               <Button
                 type="button"
@@ -247,7 +206,7 @@ const Register = () => {
         </div>
       </div>
       <h1 className="text-emerald-700 text-end text-[0.7rem] mt-2">
-        Already have an account?{" "}
+        Already have an account?
         <Link
           className="font-semibold underline underline-offset-2 italic"
           href={"/login"}

@@ -39,16 +39,13 @@ const UserDashboard = () => {
           />
           <div>
             <h1 className="text-sm font-semibold text-emerald-800 mb-4">
-              {session?.user.matric}
+              {session?.user.staffid}
             </h1>
             <h1 className="text-[0.8rem] text-emerald-800">
               {session?.user.email}
             </h1>
             <h1 className="text-[0.8rem] text-emerald-800">
-              {session?.user.department}
-            </h1>
-            <h1 className="text-[0.8rem] text-emerald-800">
-              {session?.user.faculty}
+              {session?.user.name}
             </h1>
           </div>
         </div>

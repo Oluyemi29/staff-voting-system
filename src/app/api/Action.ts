@@ -7,30 +7,24 @@ import { revalidatePath } from "next/cache";
 type RegisterProps = {
   name: string;
   email: string;
-  matric: string;
+  staffid: string;
   password: string;
-  department: string;
-  faculty: string;
   image: string;
 };
 
 export const RegisterUser = async ({
   email,
-  matric,
+  staffid,
   name,
   password,
-  department,
-  faculty,
   image,
 }: RegisterProps) => {
   try {
     if (
       !email ||
-      !matric ||
+      !staffid ||
       !name ||
       !password ||
-      !department ||
-      !faculty ||
       !image
     ) {
       return {
@@ -40,7 +34,7 @@ export const RegisterUser = async ({
     }
     const existUser = await prisma.user.findUnique({
       where: {
-        matric,
+        staffid,
       },
     });
     if (existUser) {
@@ -54,11 +48,9 @@ export const RegisterUser = async ({
       data: {
         image,
         email,
-        matric,
+        staffid,
         name,
         password: hashPassword,
-        department,
-        faculty,
       },
     });
     revalidatePath("/");
@@ -130,22 +122,18 @@ export const AdminRegistering = async ({
 type EditUserProps = {
   name: string;
   email: string;
-  matric: string;
+  staffid: string;
   password: string;
-  department: string;
-  faculty: string;
 };
 
 export const EditUser = async ({
   name,
   email,
-  matric,
+  staffid,
   password,
-  department,
-  faculty,
 }: EditUserProps) => {
   try {
-    if (!email || !matric || !name || !password || !department || !faculty) {
+    if (!email || !staffid || !name || !password ) {
       return {
         success: false,
         message: "All field are required",
@@ -153,7 +141,7 @@ export const EditUser = async ({
     }
     const existUser = await prisma.user.findUnique({
       where: {
-        matric,
+        staffid,
       },
     });
     if (!existUser) {
@@ -165,14 +153,12 @@ export const EditUser = async ({
     const hashPassword = await bcrypt.hash(password, 10);
     await prisma.user.update({
       where: {
-        matric,
+        staffid,
       },
       data: {
         name,
         email,
         password: hashPassword,
-        department,
-        faculty,
       },
     });
     revalidatePath("/admin", "page");

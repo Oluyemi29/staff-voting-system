@@ -72,7 +72,7 @@ const AdminLogin = () => {
         />
         <h1 className="text-center font-semibold text-emerald-700">Login</h1>
         <p className="text-center text-[0.6rem] text-emerald-700">
-          Note 1: Login with ur matric number and password used when registered
+          Note 1: Login with ur email and password used when registered
         </p>
 
         <form

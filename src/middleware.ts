@@ -10,18 +10,18 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   if (pathname.startsWith("/admin")) {
     if (pathname !== "/admin/login" && pathname !== "/admin/register") {
-      if (!token || !token.user || !token.user.email) {
+      if (!token || !token.user || token.user.role !== "ADMIN") {
         return NextResponse.redirect(new URL("/", req.nextUrl));
       }
     }
   }
   if (pathname.startsWith("/user")) {
-    if (!token || !token.user || !token.user.matric) {
+    if (!token || !token.user || !token.user.staffid) {
       return NextResponse.redirect(new URL("/", req.nextUrl));
     }
   }
   if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
-    if (token && token.user && token.user.matric) {
+    if (token && token.user && token.user.staffid) {
       return NextResponse.redirect(new URL("/user", req.nextUrl));
     }
   }
@@ -29,7 +29,7 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/admin/login") ||
     pathname.startsWith("/admin/register")
   ) {
-    if (token && token.user && token.user.email) {
+    if (token && token.user && token.user.role === "ADMIN") {
       return NextResponse.redirect(new URL("/admin", req.nextUrl));
     }
   }

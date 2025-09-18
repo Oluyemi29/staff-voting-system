@@ -10,25 +10,25 @@ const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        matric: { label: "Matric", type: "text", placeholder: "12345678" },
+        staffid: { label: "staffid", type: "text", placeholder: "12345678" },
         email: { label: "Email", type: "email", placeholder: "joe@gmail.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
-        const userMatric = credentials?.matric;
+        const staffId = credentials?.staffid;
         const userEmail = credentials?.email;
         const userPassword = credentials?.password;
         if (!userPassword) {
           return null;
         }
-        if (!userMatric && !userEmail) {
+        if (!staffId && !userEmail) {
           return null;
         }
-        if (userMatric) {
+        if (staffId) {
           const user = await prisma.user.findUnique({
             where: {
-              matric: userMatric,
+              staffid: staffId,
             },
           });
           if (user) {
@@ -55,7 +55,7 @@ const authOptions: AuthOptions = {
               userPassword,
               user.password
             );
-            if (checkPassword) {
+            if (checkPassword && user.role === "ADMIN") {
               return user;
             } else {
               return null;

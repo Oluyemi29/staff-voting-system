@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Ayede Voting Site",
-    template: "%s | Ayede Voting Site",
+    default: "Ayede Staff Voting Site",
+    template: "%s | Ayede Staff Voting Site",
   },
-  metadataBase: new URL('https://votingsystem-flax.vercel.app'),
+  metadataBase: new URL("https://votingsystem-flax.vercel.app"),
   description:
     "Voting System is a digital platform designed to manage and conduct elections securely and efficiently. It allows eligible users to cast votes for candidates, ensures that each voter can vote only once, and automatically tallies the results.",
   openGraph: {

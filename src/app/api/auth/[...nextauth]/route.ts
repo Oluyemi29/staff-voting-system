@@ -34,7 +34,7 @@ const authOptions: AuthOptions = {
           if (user) {
             const checkPassword = await bcrypt.compare(
               userPassword,
-              user.password
+              user.password,
             );
             if (checkPassword) {
               return user;
@@ -53,7 +53,7 @@ const authOptions: AuthOptions = {
           if (user) {
             const checkPassword = await bcrypt.compare(
               userPassword,
-              user.password
+              user.password,
             );
             if (checkPassword && user.role === "ADMIN") {
               return user;

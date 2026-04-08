@@ -1,5 +1,3 @@
-import { PrismaClient } from "@prisma/client";
-
 // const globalForPrisma = global as unknown as {
 //   prisma: PrismaClient;
 // };
@@ -10,6 +8,7 @@ import { PrismaClient } from "@prisma/client";
 
 // export default prisma;
 
+import { PrismaClient } from "@/generated/prisma/client";
 import "dotenv/config";
 
 const prisma = new PrismaClient();
